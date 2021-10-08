@@ -26,6 +26,7 @@ class Module(MongoModel):
     transcript: str = ""
     translation: List[Translation] = []
     comments: List[Comment] = []
+    duration: float
 
 
 class Course(MongoModel):

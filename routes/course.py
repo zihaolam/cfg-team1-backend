@@ -72,10 +72,7 @@ def delete_course(id):
         db.course.find_one_and_delete({"_id": ObjectId(id)})
         return {"status": "Success"}
     except pymongo.errors.OperationFailure:
-<<<<<<< HEAD
         raise HTTPException(status_code=400, status="db error")
-=======
-        raise HTTPException(status_code=400, detail="db error")
 
 
 @router.post('/file-upload')
@@ -91,13 +88,13 @@ async def handler(file: UploadFile = File(...)):
             if success:
 
                 response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
-                response["detail"] = "upload succeed"
+                response["status"] = "upload succeed"
                 return {
                     "url": f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}",
-                    "detail": "upload succeed",
+                    "status": "upload succeed",
                 }
             else:
-                raise HTTPException(status_code=400, detail="upload failed")
+                raise HTTPException(status_code=400, status="upload failed")
     finally:
         english_text = ml.convert_audio_to_original_text(
             './tempfile.mp4', src_lang="en-GB")
@@ -122,4 +119,3 @@ async def handler(file: UploadFile = File(...)):
         print(response)
         return response
         # print("questions", questions)
->>>>>>> 148463280665782583e500869622127c33ec25a5

@@ -34,7 +34,6 @@ class Course(MongoModel):
     description: str
     modules: List[Module]
     price: float
-    rating: float
     type: str
     userId: str
     cumulativeRating: float

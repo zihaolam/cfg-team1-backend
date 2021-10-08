@@ -11,11 +11,13 @@ from ML import ML
 import aiofiles
 from utils.file_upload import upload_file
 import uuid
-from moviepy.editor import VideoFileClip
+import moviepy.editor as mp
+from fastapi.encoders import jsonable_encoder
 
 router = APIRouter()
 
 ml = ML()
+
 
 @router.get('/')
 def find_all_course():
@@ -25,6 +27,7 @@ def find_all_course():
 @router.get('/{id}')
 def find_course(id):
     return serialize_dict(db.course.find_one({"_id": ObjectId(id)}))
+
 
 @router.get('/categorized/')
 def find_courses_by_category():
@@ -36,16 +39,12 @@ def find_courses_by_category():
         res[course["category"]].append(course)
     return res
 
-@router.post('/create')
-async def create_course(courseRequest:dict):
 
+@router.post('/')
+async def create_course(course: Course):
     try:
-        courseRequest["cumulativeRating"] = 3
-        for module in courseRequest['modules']:
-            module["views"] = 0
-            module["rating"] = 3
-            module["comments"] = []
-        inserted_id = db.course.insert_one(courseRequest).inserted_id
+        course = jsonable_encoder(course)
+        inserted_id = db.course.insert_one(dict(course)).inserted_id
         return serialize_dict(db.course.find_one({"_id": inserted_id}))
     except pymongo.errors.OperationFailure as e:
         print(e)
@@ -53,10 +52,11 @@ async def create_course(courseRequest:dict):
 
 
 @router.put('/{id}')
-def update_course(id, courseRequest:dict):
+def update_course(id, courseRequest: dict):
     try:
-        originData = serialize_dict(db.user.find_one({"_id": ObjectId(id)}, {'_id': False}))
-        for key,value in courseRequest.items():
+        originData = serialize_dict(db.user.find_one(
+            {"_id": ObjectId(id)}, {'_id': False}))
+        for key, value in courseRequest.items():
             if key in originData:
                 originData[key] = value
         db.user.find_one_and_update({"_id": ObjectId(id)},
@@ -83,7 +83,7 @@ async def handler(file: UploadFile = File(...)):
         async with aiofiles.open('tempfile.mp4', 'wb') as out_file:
             while content := await file.read(1024):  # async read chunk
                 await out_file.write(content)
-            
+
             success = upload_file('./tempfile.mp4', filename)
             if success:
                 response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"

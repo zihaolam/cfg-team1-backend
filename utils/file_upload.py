@@ -10,13 +10,13 @@ SECRET_KEY = os.getenv('AWS_SECRET_KEY')
 BUCKET_NAME = "cfg-team1"
 
 
-def upload_file(file_data, file_name):
+async def upload_file(file_data, file_name):
     s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
                       aws_secret_access_key=SECRET_KEY)
 
     try:
-        s3.upload_file(file_data, BUCKET_NAME, file_name,
-                       ExtraArgs={'ACL': 'public-read'})
+        await s3.upload_file(file_data, BUCKET_NAME, file_name,
+                             ExtraArgs={'ACL': 'public-read'})
         return True, file_name
     except FileNotFoundError:
         print("The file was not found")

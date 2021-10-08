@@ -12,6 +12,11 @@ class Translation(MongoModel):
     text: str
 
 
+class Comment(MongoModel):
+    username: str
+    text: str
+
+
 class Module(MongoModel):
     name: str
     description: str
@@ -20,6 +25,7 @@ class Module(MongoModel):
     questions: List[Question] = []
     transcript: str = ""
     translation: List[Translation] = []
+    comments: List[Comment] = []
 
 
 class Course(MongoModel):
@@ -31,3 +37,4 @@ class Course(MongoModel):
     type: str
     userId: str
     cumulativeRating: float
+    thumbnailUrl: str = ""

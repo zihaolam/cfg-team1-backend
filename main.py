@@ -24,10 +24,10 @@ async def handler(file: UploadFile = File(...)):
     finally:
         english_text = ml.convert_audio_to_original_text(
             './tempfile.mp4', src_lang="en-GB")
-        ms_text = ml.convert_original_text_to_specific_lang(
-            english_text, tgt_lang="ms")
-        hi_text = ml.convert_original_text_to_specific_lang(
-            english_text, tgt_lang="hi")
+        # ms_text = ml.convert_original_text_to_specific_lang(
+        #     english_text, tgt_lang="ms")
+        # hi_text = ml.convert_original_text_to_specific_lang(
+        #     english_text, tgt_lang="hi")
+        # questions = ml.generate_questions(english_text)
         print(english_text)
-        print(ms_text)
-        print(hi_text)
+        # print("questions", questions)

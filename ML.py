@@ -2,7 +2,7 @@ import speech_recognition as sr
 import moviepy.editor as mp
 import os
 from deep_translator import GoogleTranslator
-from pipelines import pipeline
+from question_generation.pipelines import pipeline
 
 
 class ML:

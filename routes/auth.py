@@ -17,10 +17,10 @@ def login_handler(user: User):
             raise HTTPException(status_code=400, detail="user not found")
 
         if credentials["password"] == user["password"]:
-            return {"detail": "auth succeed"}
+            return {"status": "Success"}
 
         else:
-            raise HTTPException(status_code=400, detail="wrong password")
+            return {"status": "Failed"}
 
     except pymongo.errors.OperationFailure:
         raise HTTPException(status_code=400, detail="db error")

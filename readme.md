@@ -5,19 +5,102 @@
 ## Authenication
 1. Login
 - url/auth/login
+- Post
+- Request:
 ```
 {"username":"tonylee","password":"admin1"}
 ```
+- Response: {"status":<Success/Failed>}
+
 ---
+
+## User
+1. Get Users List
+- url/user/
+- Get
+- Request: None
+- Response: <Array_of_User>
+
+2. Get User by ID
+- url/user/{id}
+- Get
+- Request: None
+- Response: 
+```
+{
+   "_id":{
+      "$oid":"61603a854de4c5355e1be49e"
+   },
+   "username":"Ben Wong",
+   "role":"trainer",
+   "courseHistory":[
+   ],
+   "rating":80
+}
+```
+
+3. Create Users
+- url/user/create
+- Post
+- Request: 
+```
+{
+    "username":"zihao_ftw"
+    "password":"zihao_ftw123"
+    "role":"trainer"
+}
+```
+- Response:
+```
+{
+    "_id":{
+      "$oid":"61603a854de4c5355e1be49e"
+   },
+   "username":"Jane Doe",
+   "role":"trainer",
+   "courseHistory":[],
+   "rating":50
+}
+```
+
+4. Update Users
+- url/user/{id}
+- Put
+- Request:
+```
+{
+   "username":"zihao (immortal)",
+}
+```
+- Response:
+```
+{
+   "_id":{
+      "$oid":"61603a854de4c5355e1be49e"
+   },
+   "username":"zihao (immortal)",
+   "role":"trainer",
+   "courseHistory":[
+   ],
+   "rating":90
+}
+```
+
+5. Delete Users
+- url/user/{id}
+- Delete
+- Request: None
+- Response: <Success/Failed>
+
+---
+
 ## Course
 1. Get Courses List
 - url/course/
 - Get
-```
-```
-2. Create Courses
-- url/course/
-- Post
+- Request: None
+- Response:
+  
 ```
 {
    "name":"Course 1",
@@ -50,6 +133,18 @@
       }
    ]
 }
+```
+
+2. Create Courses
+- url/course/
+- Post
+- Request:
+```
+
+```
+- Response:
+```
+
 
 ```
 
@@ -91,52 +186,11 @@
       }
    ]
 }
-
 ```
+
 
 4. Delete Courses
 - url/course/{id}
-- Delete
-
----
-## User
-1. Get Users List
-- url/user/
-- Get
-
-
-2. Create Courses
-- url/user/
-- Post
-```
-{
-   "username":"Jane Doe",
-   "password":"trainer2",
-   "role":"trainer",
-   "courseHistory":[
-      
-   ],
-   "rating":95
-}
-```
-
-3. Update Courses
-- url/user/{id}
-- Put
-```
-{
-   "username":"Jane Doe",
-   "password":"trainer2",
-   "role":"trainer",
-   "courseHistory":[
-      
-   ],
-   "rating":95
-}
-```
-
-4. Delete Courses
-- url/user/{id}
 - Delete
 
 ---

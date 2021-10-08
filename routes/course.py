@@ -84,6 +84,7 @@ async def handler(file: UploadFile = File(...)):
 
             success = upload_file('./tempfile.mp4', filename)
             if success:
+                print("success")
                 response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
                 response["detail"] = "upload succeed"
             else:

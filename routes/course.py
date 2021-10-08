@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, File, UploadFile
 import pymongo
 import json
 from models.course import Course
@@ -8,6 +8,8 @@ import sys
 from bson import ObjectId
 from ML import ML
 import aiofiles
+from utils.file_upload import upload_file
+import uuid
 
 router = APIRouter()
 
@@ -70,4 +72,54 @@ def delete_course(id):
         db.course.find_one_and_delete({"_id": ObjectId(id)})
         return {"status": "Success"}
     except pymongo.errors.OperationFailure:
+<<<<<<< HEAD
         raise HTTPException(status_code=400, status="db error")
+=======
+        raise HTTPException(status_code=400, detail="db error")
+
+
+@router.post('/file-upload')
+async def handler(file: UploadFile = File(...)):
+    filename = str(uuid.uuid4()) + file.filename
+    response = {}
+    try:
+        async with aiofiles.open('tempfile.mp4', 'wb') as out_file:
+            while content := await file.read(1024):  # async read chunk
+                await out_file.write(content)
+
+            success = upload_file('./tempfile.mp4', filename)
+            if success:
+
+                response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
+                response["detail"] = "upload succeed"
+                return {
+                    "url": f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}",
+                    "detail": "upload succeed",
+                }
+            else:
+                raise HTTPException(status_code=400, detail="upload failed")
+    finally:
+        english_text = ml.convert_audio_to_original_text(
+            './tempfile.mp4', src_lang="en-GB")
+        hindhi_text = ml.convert_original_text_to_specific_lang(
+            english_text, 'hi')
+        ms_text = ml.convert_original_text_to_specific_lang(
+            english_text, 'ms')
+        # questions = ml.generate_questions(english_text)
+        response["translation"] = [{
+            "text": english_text,
+            "language": "english"
+        },
+            {
+            "text": hindhi_text,
+            "language": "hindhi"
+        },
+            {
+            "text": ms_text,
+            "language": "malay"
+        }]
+        response["transcript"] = english_text
+        print(response)
+        return response
+        # print("questions", questions)
+>>>>>>> 148463280665782583e500869622127c33ec25a5

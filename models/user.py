@@ -3,13 +3,13 @@ from typing import List
 
 
 class CourseHistory(MongoModel):
-    progress: str
+    progress: float
     courseId: str
 
 
 class User(MongoModel):
     username: str
     password: str
-    role: str
+    role: str = "Student"
     courseHistory: List[CourseHistory] = []
-    rating: float
+    rating: float = None

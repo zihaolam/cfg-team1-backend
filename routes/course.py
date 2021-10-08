@@ -26,18 +26,16 @@ def find_all_course():
 
 @router.get('/{id}')
 def find_course(id):
-    return serialize_dict(db.course.find_one({"_id": ObjectId(id)}))
-
-
-@router.get('/categorized/')
-def find_courses_by_category():
-    data = serialize_list(db.course.find())
-    res = {}
-    for course in data:
-        if course["category"] not in res:
-            res[course["category"]] = []
-        res[course["category"]].append(course)
-    return res
+    if id == 'categorized':
+        data = serialize_list(db.course.find())
+        res = {}
+        for course in data:
+            if course["category"] not in res:
+                res[course["category"]] = []
+            res[course["category"]].append(course)
+        return res
+    else:
+        return serialize_dict(db.course.find_one({"_id": ObjectId(id)}))
 
 
 @router.post('/')

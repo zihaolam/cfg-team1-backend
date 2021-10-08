@@ -14,7 +14,7 @@ def login_handler(user: User):
     try:
         credentials = db.user.find_one({"username": user["username"]})
         if not credentials:
-            raise HTTPException(status_code=400, detail="user not found")
+            raise HTTPException(status_code=400, status="user not found")
 
         if credentials["password"] == user["password"]:
             return {"status": "Success"}
@@ -23,4 +23,4 @@ def login_handler(user: User):
             return {"status": "Failed"}
 
     except pymongo.errors.OperationFailure:
-        raise HTTPException(status_code=400, detail="db error")
+        raise HTTPException(status_code=400, status="db error")

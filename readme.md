@@ -170,7 +170,7 @@
          "questions":[
             
          ],
-         "translation":{},
+         "transcript":{"english":"abc","french":"def"}
          "rating":3,
          "comments":[
             {
@@ -211,7 +211,7 @@
          "questions":[
             
          ],
-         "translation":{},
+         "transcript":{"english":"abc","french":"def"}
          "rating":3,
          "comments":[
             {
@@ -263,7 +263,7 @@
          "questions":[
             
          ],
-         "translation":{},
+         "transcript":{"english":"abc","french":"def"}
          "rating":3,
          "comments":[
             {

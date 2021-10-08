@@ -11,16 +11,11 @@ from ML import ML
 import aiofiles
 from utils.file_upload import upload_file
 import uuid
-<<<<<<< HEAD
 from moviepy.editor import VideoFileClip
-=======
-import moviepy.editor as mp
->>>>>>> 49500c6238b439c4c30d97bdfda5799d8c74b42d
 
 router = APIRouter()
 
 ml = ML()
-
 
 @router.get('/')
 def find_all_course():
@@ -97,28 +92,11 @@ async def handler(file: UploadFile = File(...)):
             english_text, 'ms')
         questions = []
         # questions = ml.generate_questions(english_text)
-<<<<<<< HEAD
         response["questions"] = questions
         response["transcript"] = {
             "english": english_text,
             "hindhi": hindhi_text,
             "malay": ms_text,
         }
-=======
-        response["duration"] = duration
-        response["translation"] = [{
-            "text": english_text,
-            "language": "english"
-        },
-            {
-            "text": hindhi_text,
-            "language": "hindhi"
-        },
-            {
-            "text": ms_text,
-            "language": "malay"
-        }]
-        response["transcript"] = english_text
->>>>>>> 49500c6238b439c4c30d97bdfda5799d8c74b42d
         print(response)
         return response

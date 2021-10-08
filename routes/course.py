@@ -85,7 +85,9 @@ async def handler(file: UploadFile = File(...)):
         if success:
             return {
                 "url": f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}",
-                "detail": "upload succeed"
+                "detail": "upload succeed",
+                "transcript": ml.convert_audio_to_original_text(
+                    './tempfile.mp4', src_lang="en-GB")
             }
         else:
             raise HTTPException(status_code=400, detail="upload failed")

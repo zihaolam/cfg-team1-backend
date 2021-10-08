@@ -82,16 +82,10 @@ async def handler(file: UploadFile = File(...)):
             while content := await file.read(1024):  # async read chunk
                 await out_file.write(content)
 
-            success = upload_file('./tempfile.mp4', filename,
-                                  ExtraArgs={'ACL': 'public-read'})
+            success = upload_file('./tempfile.mp4', filename)
             if success:
-
                 response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
                 response["detail"] = "upload succeed"
-                return {
-                    "url": f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}",
-                    "detail": "upload succeed",
-                }
             else:
                 raise HTTPException(status_code=400, detail="upload failed")
     finally:
@@ -117,4 +111,3 @@ async def handler(file: UploadFile = File(...)):
         response["transcript"] = english_text
         print(response)
         return response
-        # print("questions", questions)

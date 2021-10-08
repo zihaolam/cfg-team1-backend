@@ -15,7 +15,8 @@ def upload_file(file_data, file_name):
                       aws_secret_access_key=SECRET_KEY)
 
     try:
-        s3.upload_file(file_data, BUCKET_NAME, file_name)
+        s3.upload_file(file_data, BUCKET_NAME, file_name,
+                       ExtraArgs={'ACL': 'public-read'})
         return True, file_name
     except FileNotFoundError:
         print("The file was not found")

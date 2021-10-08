@@ -10,6 +10,7 @@ from ML import ML
 import aiofiles
 from utils.file_upload import upload_file
 import uuid
+import moviepy.editor as mp
 
 router = APIRouter()
 
@@ -84,19 +85,19 @@ async def handler(file: UploadFile = File(...)):
 
             success = upload_file('./tempfile.mp4', filename)
             if success:
-                print("success")
                 response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
                 response["detail"] = "upload succeed"
             else:
                 raise HTTPException(status_code=400, detail="upload failed")
     finally:
-        english_text = ml.convert_audio_to_original_text(
+        english_text, duration = ml.convert_audio_to_original_text(
             './tempfile.mp4', src_lang="en-GB")
         hindhi_text = ml.convert_original_text_to_specific_lang(
             english_text, 'hi')
         ms_text = ml.convert_original_text_to_specific_lang(
             english_text, 'ms')
         # questions = ml.generate_questions(english_text)
+        response["duration"] = duration
         response["translation"] = [{
             "text": english_text,
             "language": "english"

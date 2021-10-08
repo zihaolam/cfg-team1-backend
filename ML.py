@@ -25,7 +25,7 @@ class ML:
             try:
                 print('Converting audio transcripts into text ...')
                 text = r.recognize_google(audio_text, language=src_lang)
-                return text
+                return text, clip.duration
             except:
                 return 'Something went wrong'
 

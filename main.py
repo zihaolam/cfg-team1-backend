@@ -22,6 +22,12 @@ async def handler(file: UploadFile = File(...)):
                 await out_file.write(content)
 
     finally:
-        text = ml.convert_audio_to_original_text(
+        english_text = ml.convert_audio_to_original_text(
             './tempfile.mp4', src_lang="en-GB")
-        print(text)
+        ms_text = ml.convert_original_text_to_specific_lang(
+            english_text, tgt_lang="ms")
+        hi_text = ml.convert_original_text_to_specific_lang(
+            english_text, tgt_lang="hi")
+        print(english_text)
+        print(ms_text)
+        print(hi_text)

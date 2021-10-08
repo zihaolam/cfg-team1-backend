@@ -19,6 +19,11 @@ def find_all_course():
     return serialize_list(db.course.find())
 
 
+@router.get('/{id}')
+def find_course(id):
+    return serialize_dict(db.course.find_one({"_id": ObjectId(id)}))
+
+
 @router.post('/')
 async def create_course(course: Course):
     try:

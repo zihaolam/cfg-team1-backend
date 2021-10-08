@@ -25,7 +25,7 @@ def create_user(userRequest:dict):
         inserted_id = db.user.insert_one(dict(userRequest)).inserted_id
         return serialize_dict(db.user.find_one({"_id": inserted_id}))
     except pymongo.errors.OperationFailure:
-        raise HTTPException(status_code=400, detail="db error")
+        raise HTTPException(status_code=400, status="db error")
 
 
 @router.put('/{id}')
@@ -39,7 +39,7 @@ def update_user(id, userRequest:dict):
                                     {"$set": originData})
         return serialize_dict(db.user.find_one({"_id": ObjectId(id)}))
     except pymongo.errors.OperationFailure:
-        raise HTTPException(status_code=400, detail="db error")
+        raise HTTPException(status_code=400, status="db error")
 
 @router.delete("/{id}")
 def delete_user(id):
@@ -47,4 +47,4 @@ def delete_user(id):
         db.user.find_one_and_delete({"_id": ObjectId(id)})
         return {"status": "Success"}
     except pymongo.errors.OperationFailure:
-        raise HTTPException(status_code=400, detail="db error")
+        raise HTTPException(status_code=400, status="db error")

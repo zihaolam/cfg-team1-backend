@@ -105,6 +105,6 @@ async def handler(file: UploadFile = File(...)):
             "hindhi": hindhi_text,
             "malay": ms_text,
         }
-        response["transcript"]
+        response["transcript"] = english_text
         print(response)
         return response

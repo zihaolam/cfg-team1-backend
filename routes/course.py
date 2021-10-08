@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile
-from numpy import mod
+from numpy import mod, string_
 import pymongo
 import json
 from models.course import Course
@@ -26,6 +26,15 @@ def find_all_course():
 def find_course(id):
     return serialize_dict(db.course.find_one({"_id": ObjectId(id)}))
 
+@router.get('/categorized/')
+def find_courses_by_category():
+    data = serialize_list(db.course.find())
+    res = {}
+    for course in data:
+        if course["category"] not in res:
+            res[course["category"]] = []
+        res[course["category"]].append(course)
+    return res
 
 @router.post('/')
 async def create_course(courseRequest:dict):
@@ -93,10 +102,11 @@ async def handler(file: UploadFile = File(...)):
         questions = []
         # questions = ml.generate_questions(english_text)
         response["questions"] = questions
-        response["transcript"] = {
+        response["translation"] = {
             "english": english_text,
             "hindhi": hindhi_text,
             "malay": ms_text,
         }
+        response["transcript"]
         print(response)
         return response

@@ -127,7 +127,7 @@
          "questions":[
             
          ],
-         "transcript":"",
+         "translation":"",
          "translation":[
             
          ],
@@ -151,7 +151,19 @@
 }
 ```
 
-3. Create Courses
+3. Get Course Group by Category
+- url/course/categorized/
+- Get
+- Request: None
+- Response:
+```
+{
+   "Toilet Cleaning":[<Array_of_course_object>],
+   "Toilet Washing":[<Array_of_course_object>]
+}
+```
+
+1. Create Courses
 - url/course/create
 - Post
 - Request:
@@ -170,7 +182,8 @@
          "questions":[
             
          ],
-         "transcript":{"english":"abc","french":"def"}
+         "transcript":"abc",
+         "translation":{"english":"abc","french":"def"}
          "rating":3,
          "comments":[
             {
@@ -211,7 +224,8 @@
          "questions":[
             
          ],
-         "transcript":{"english":"abc","french":"def"}
+         "transcript":"abc",
+         "translation":{"english":"abc","french":"def"}
          "rating":3,
          "comments":[
             {
@@ -233,7 +247,7 @@
 }
 ```
 
-4. Update Courses
+5. Update Courses
 - url/course/{id}
 - Put
 - Request:
@@ -263,7 +277,8 @@
          "questions":[
             
          ],
-         "transcript":{"english":"abc","french":"def"}
+         "transcript":"abc",
+         "translation":{"english":"abc","french":"def"}
          "rating":3,
          "comments":[
             {
@@ -285,7 +300,7 @@
 }
 ```
 
-5. Delete Users
+6. Delete Users
 - url/user/{id}
 - Delete
 - Request: None

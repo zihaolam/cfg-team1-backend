@@ -38,3 +38,4 @@ class Course(MongoModel):
     userId: str
     cumulativeRating: float
     thumbnailUrl: str = ""
+    category: str

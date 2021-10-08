@@ -6,6 +6,22 @@ from ML import ML
 import aiofiles
 import os
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+origins = [
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app = FastAPI()
 app.include_router(user_router, prefix="/user")
 app.include_router(auth_router, prefix="/auth")

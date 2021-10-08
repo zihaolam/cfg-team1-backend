@@ -157,25 +157,38 @@
 - Request:
 ```
 {
-    "name":"New Course",
-    "userID":"61603a6a4de4c5355e1be49c",
-    "description":"XDD",
-    "modules":[
-        {
-            "name":"1st Module:",
-            "description":"XDD1",
-            "videoLink":"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/video1.mp4"
-        },
-        {
-            "name":"2nd Module:",
-            "description":"XDD2",
-            "videoLink":"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/video2.mp4"
-        },
-    ],
-    "price":20.5,
-    "type":"online",
-    "thumbnailUrl":"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/education.jpeg",
-    "category":"toilet"
+   "name":"Course 1",
+   "userId":"61603a6a4de4c5355e1be49c",
+   "description":"",
+   "modules":[
+      {
+         "name":"Module 1",
+         "duration":"50",
+         "description":"",
+         "videoLink":"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/video1.mp4",
+         "views":5,
+         "questions":[
+            
+         ],
+         "translation":{},
+         "rating":3,
+         "comments":[
+            {
+               "username":"Lam Zi Hao",
+               "text":"This is a great course, will recommend to friends"
+            },
+            {
+               "username":"Kim Ji Hoo",
+               "text":"Learned alot form this course"
+            }
+         ]
+      }      
+   ],
+   "price":20.5,
+   "type":"online",
+   "cumulativeRating":4,
+   "thumbnailUrl":"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/education.jpeg",
+   "category":"toilet_cleaning"
 }
 
 ```
@@ -198,10 +211,7 @@
          "questions":[
             
          ],
-         "transcript":"",
-         "translation":[
-            
-         ],
+         "translation":{},
          "rating":3,
          "comments":[
             {
@@ -253,10 +263,7 @@
          "questions":[
             
          ],
-         "transcript":"",
-         "translation":[
-            
-         ],
+         "translation":{},
          "rating":3,
          "comments":[
             {

@@ -1,4 +1,5 @@
 from fastapi import APIRouter, HTTPException, File, UploadFile
+from numpy import mod
 import pymongo
 import json
 from models.course import Course
@@ -10,6 +11,7 @@ from ML import ML
 import aiofiles
 from utils.file_upload import upload_file
 import uuid
+from moviepy.editor import VideoFileClip
 
 router = APIRouter()
 
@@ -27,26 +29,15 @@ def find_course(id):
 
 
 @router.post('/')
-async def create_course(course: Course):
+async def create_course(courseRequest:dict):
+
     try:
-        course = dict(course)
-        course['modules'] = [dict(module) for module in course['modules']]
-        # translations = []
-        # try:
-        #     async with aiofiles.open('tempfile.mp4', 'wb') as out_file:
-        #         while content := await file.read(1024):  # async read chunk
-        #             await out_file.write(content)
-
-        # finally:
-        #     langs = ["en-GB", "ms", "hi"]
-        #     for lang in langs:
-        #         translations.append({"text": ml.convert_audio_to_original_text(
-        #             './tempfile.mp4', src_lang=lang),
-        #             "language": lang
-        #         })
-
-        # for module in course['modules']:
-        inserted_id = db.course.insert_one(dict(course)).inserted_id
+        courseRequest["cumulativeRating"] = 3
+        for module in courseRequest['modules']:
+            module["views"] = 0
+            module["rating"] = 3
+            module["comments"] = []
+        inserted_id = db.course.insert_one(courseRequest).inserted_id
         return serialize_dict(db.course.find_one({"_id": inserted_id}))
     except pymongo.errors.OperationFailure as e:
         print(e)
@@ -54,14 +45,17 @@ async def create_course(course: Course):
 
 
 @router.put('/{id}')
-def update_course(id, course: Course):
+def update_course(id, courseRequest:dict):
     try:
-        course = dict(course)
-        course['modules'] = [dict(module) for module in course['modules']]
-        db.course.find_one_and_update({"_id": ObjectId(id)}, {"$set": course})
-        return serialize_dict(db.course.find_one({"_id": ObjectId(id)}))
-    except pymongo.errors.OperationFailure as e:
-        raise HTTPException(status_code=400, detail="db error")
+        originData = serialize_dict(db.user.find_one({"_id": ObjectId(id)}, {'_id': False}))
+        for key,value in courseRequest.items():
+            if key in originData:
+                originData[key] = value
+        db.user.find_one_and_update({"_id": ObjectId(id)},
+                                    {"$set": originData})
+        return serialize_dict(db.user.find_one({"_id": ObjectId(id)}))
+    except pymongo.errors.OperationFailure:
+        raise HTTPException(status_code=400, status="db error")
 
 
 @router.delete("/{id}")
@@ -81,11 +75,13 @@ async def handler(file: UploadFile = File(...)):
         async with aiofiles.open('tempfile.mp4', 'wb') as out_file:
             while content := await file.read(1024):  # async read chunk
                 await out_file.write(content)
-
+            
             success = upload_file('./tempfile.mp4', filename)
             if success:
                 response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
                 response["detail"] = "upload succeed"
+                clip = VideoFileClip("./tempfile.mp4")
+                response["duration"] = clip.duration
             else:
                 raise HTTPException(status_code=400, detail="upload failed")
     finally:
@@ -95,19 +91,13 @@ async def handler(file: UploadFile = File(...)):
             english_text, 'hi')
         ms_text = ml.convert_original_text_to_specific_lang(
             english_text, 'ms')
+        questions = []
         # questions = ml.generate_questions(english_text)
-        response["translation"] = [{
-            "text": english_text,
-            "language": "english"
-        },
-            {
-            "text": hindhi_text,
-            "language": "hindhi"
-        },
-            {
-            "text": ms_text,
-            "language": "malay"
-        }]
-        response["transcript"] = english_text
+        response["questions"] = questions
+        response["transcript"] = {
+            "english": english_text,
+            "hindhi": hindhi_text,
+            "malay": ms_text,
+        }
         print(response)
         return response

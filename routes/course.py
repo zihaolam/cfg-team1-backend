@@ -36,7 +36,7 @@ def find_courses_by_category():
         res[course["category"]].append(course)
     return res
 
-@router.post('/')
+@router.post('/create')
 async def create_course(courseRequest:dict):
 
     try:

@@ -2,10 +2,6 @@
 - url: http://127.0.0.1:8000 
 
 ---
-## Libraries
-
-
----
 ## Authenication
 1. Login
 - url/auth/login

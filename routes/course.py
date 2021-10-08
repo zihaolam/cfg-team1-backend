@@ -76,29 +76,44 @@ def delete_course(id):
 @router.post('/file-upload')
 async def handler(file: UploadFile = File(...)):
     filename = str(uuid.uuid4()) + file.filename
-    # try:
-    async with aiofiles.open('tempfile.mp4', 'wb') as out_file:
-        while content := await file.read(1024):  # async read chunk
-            await out_file.write(content)
+    response = {}
+    try:
+        async with aiofiles.open('tempfile.mp4', 'wb') as out_file:
+            while content := await file.read(1024):  # async read chunk
+                await out_file.write(content)
 
-        success = upload_file('./tempfile.mp4', filename)
-        if success:
-            return {
-                "url": f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}",
-                "detail": "upload succeed",
-                "transcript": ml.convert_audio_to_original_text(
-                    './tempfile.mp4', src_lang="en-GB")
-            }
-        else:
-            raise HTTPException(status_code=400, detail="upload failed")
+            success = upload_file('./tempfile.mp4', filename)
+            if success:
 
-    # finally:
-    #     english_text = ml.convert_audio_to_original_text(
-    #         './tempfile.mp4', src_lang="en-GB")
-    #     # ms_text = ml.convert_original_text_to_specific_lang(
-    #     #     english_text, tgt_lang="ms")
-    #     # hi_text = ml.convert_original_text_to_specific_lang(
-    #     #     english_text, tgt_lang="hi")
-    #     # questions = ml.generate_questions(english_text)
-    #     print(english_text)
-    #     # print("questions", questions)
+                response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
+                response["detail"] = "upload succeed"
+                return {
+                    "url": f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}",
+                    "detail": "upload succeed",
+                }
+            else:
+                raise HTTPException(status_code=400, detail="upload failed")
+    finally:
+        english_text = ml.convert_audio_to_original_text(
+            './tempfile.mp4', src_lang="en-GB")
+        hindhi_text = ml.convert_original_text_to_specific_lang(
+            english_text, 'hi')
+        ms_text = ml.convert_original_text_to_specific_lang(
+            english_text, 'ms')
+        # questions = ml.generate_questions(english_text)
+        response["translation"] = [{
+            "text": english_text,
+            "language": "english"
+        },
+            {
+            "text": hindhi_text,
+            "language": "hindhi"
+        },
+            {
+            "text": ms_text,
+            "language": "malay"
+        }]
+        response["transcript"] = english_text
+        print(response)
+        return response
+        # print("questions", questions)

@@ -6,7 +6,7 @@ from ML import ML
 import aiofiles
 import os
 
-from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 

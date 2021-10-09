@@ -84,7 +84,7 @@ async def handler(file: UploadFile = File(...)):
 
             success = upload_file('./tempfile.mp4', filename)
             if success:
-                response['url'] = f"https://cfg-team1.s3.ap-southeast-1.amazonaws.com/{filename}"
+                response['url'] = "https://cfg-team1.s3.ap-southeast-1.amazonaws.com/11decc4b-ae2e-4eef-a9f8-48bd4af0bf30video_test.mp4"
                 response["detail"] = "upload succeed"
                 clip = VideoFileClip("./tempfile.mp4")
                 response["duration"] = clip.duration
@@ -100,11 +100,11 @@ async def handler(file: UploadFile = File(...)):
         questions = []
         # questions = ml.generate_questions(english_text)
         response["questions"] = questions
-        response["translation"] = {
-            "english": english_text,
-            "hindhi": hindhi_text,
-            "malay": ms_text,
-        }
+        response["translation"] =[{
+            "language": "english", "text": english_text},
+            {"language": "hindhi", "text": hindhi_text},
+            {"language": "malay", "text": ms_text},
+            ]
         response["transcript"] = english_text
         print(response)
         return response

@@ -8,8 +8,8 @@ class Question(MongoModel):
 
 
 class Translation(MongoModel):
-    language: str
-    text: str
+    language: str = ""
+    text: str = ""
 
 
 class Comment(MongoModel):
@@ -36,6 +36,6 @@ class Course(MongoModel):
     price: float
     type: str
     userId: str
-    cumulativeRating: float
+    cumulativeRating: float = 0
     thumbnailUrl: str = ""
     category: str
